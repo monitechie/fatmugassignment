@@ -87,9 +87,12 @@ class PurchaseOrderDetailView(APIView):
 
 class PerformanceMetricsView(APIView):
     def get(self, request, pk):
-        vendor_detail = HistoricalPerformance.objects.get(pk=pk)
-        serializer = HistoricalPerformanceSerializer(vendor_detail)
-        return Response(serializer.data)
+        try:
+            vendor_detail = HistoricalPerformance.objects.get(pk=pk)
+            serializer = HistoricalPerformanceSerializer(vendor_detail)
+            return Response(serializer.data)
+        except:
+            return Response({"error": "Performance of Vendor Detail vnot found"}, status=status.HTTP_404_NOT_FOUND)
 
 
 class PurchaseOrderAcknowledgeView(generics.UpdateAPIView):

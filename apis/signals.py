@@ -34,7 +34,7 @@ def update_performance_metrics(sender, instance, **kwargs):
             status='completed').count() / total_orders) * 100 if total_orders != 0 else 0
 
         # Update HistoricalPerformance model
-        HistoricalPerformance.objects.create(
+        HistoricalPerformance.objects.update_or_create(
             vendor=vendor,
             on_time_delivery_rate=on_time_delivery_rate,
             quality_rating_avg=quality_rating_avg,
