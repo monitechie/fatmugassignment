@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from apis.serializers import HistoricalPerformanceSerializer, PurchaseOrderAcknowledgeSerializer, PurchaseOrderSerializer, VendorSerializer
 from rest_framework import status, generics
+from django.db import models
 # Create your views here.
 
 
@@ -110,15 +111,10 @@ class PurchaseOrderAcknowledgeView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
 
-        # Check if acknowledgement_date is being updated
         if 'acknowledgement_date' in request.data:
             acknowledgement_date = request.data['acknowledgement_date']
 
-            # Assuming acknowledgement_date is in the correct format
             instance.acknowledgement_date = acknowledgement_date
             instance.save()
-
-            # Trigger the recalculation of average_response_time
-            # Add your logic here to recalculate average_response_time
 
             return Response({'message': 'Purchase order acknowledged successfully.'}, status=status.HTTP_200_OK)
